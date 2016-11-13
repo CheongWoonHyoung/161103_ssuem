@@ -3,18 +3,27 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <TextView
-        android:textSize="20dp"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="20dp"
-        android:text="sample"
-        android:textColor="#000000"
-        android:id="@+id/textView1"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="100dp">
+        <com.example.woonhyoungcheong.myapplication.CheckableLinearLayout
+            android:layout_width="30dp"
+            android:layout_height="match_parent">
+            <CheckBox
+                android:focusable="false"
+                android:id="@+id/checkBox1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.example.woonhyoungcheong.myapplication.CheckableLinearLayout>
+        <TextView
+            android:padding="15dp"
+            android:textSize="20dp"
+            android:text="sample"
+            android:textColor="#000000"
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </LinearLayout>
