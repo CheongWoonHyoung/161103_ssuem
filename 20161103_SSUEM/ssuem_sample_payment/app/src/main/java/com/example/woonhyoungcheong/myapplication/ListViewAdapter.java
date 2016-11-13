@@ -16,14 +16,14 @@ import java.util.ArrayList;
 public class ListViewAdapter extends BaseAdapter{
 
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
-
     public ListViewAdapter(){
+
 
     }
 
     @Override
     public int getCount(){
-        return listViewItemList.size();
+        return 2;
     }
 
     @Override
@@ -36,9 +36,8 @@ public class ListViewAdapter extends BaseAdapter{
         }
 
         TextView titleTextView = (TextView) convertView.findViewById(R.id.textView1) ;
-        ListViewItem listViewItem = listViewItemList.get(position);
-
-        titleTextView.setText(listViewItem.getTitle());
+    //    ListViewItem listViewItem = listViewItemList.get(position);
+    //    titleTextView.setText(listViewItem.getTitle());
         return convertView;
     }
 
