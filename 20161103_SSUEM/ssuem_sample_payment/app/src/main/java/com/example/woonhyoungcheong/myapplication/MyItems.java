@@ -21,6 +21,7 @@ public class MyItems extends Activity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
 
+
         text_title = (TextView)findViewById(R.id.title);
         text_title.setText(name);
 

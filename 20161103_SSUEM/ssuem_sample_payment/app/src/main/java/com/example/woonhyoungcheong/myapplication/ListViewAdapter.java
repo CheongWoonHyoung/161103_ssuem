@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +23,7 @@ public class ListViewAdapter extends BaseAdapter{
     private ArrayList<User> mUserData;
     private ArrayList<CheckBox> ncb;
     private ArrayList<String> nky;
+    private ArrayList<String> nkyid;
     CheckBox chkbox;
 
     public ListViewAdapter(Context context){
@@ -29,7 +31,9 @@ public class ListViewAdapter extends BaseAdapter{
         mUserData = new ArrayList<User>();
         mContext = context;
         ncb = new ArrayList<CheckBox>();
-        nky = new ArrayList<String >();
+        nky = new ArrayList<String>();
+        nkyid = new ArrayList<String>();
+
     }
 
     @Override
@@ -57,6 +61,7 @@ public class ListViewAdapter extends BaseAdapter{
         if(mUser != null){
             titleTextView.setText(mUser.getUserWriting());
             nky.add(mUser.getUserWriting());
+            nkyid.add(mUser.getUserWriting_ID());
         }
         return convertView;
     }
@@ -87,4 +92,8 @@ public class ListViewAdapter extends BaseAdapter{
     public ArrayList<String> getnky(){
         return nky;
     }
+
+    public ArrayList<String> getnkyid() { return nkyid; }
+
+
 }
