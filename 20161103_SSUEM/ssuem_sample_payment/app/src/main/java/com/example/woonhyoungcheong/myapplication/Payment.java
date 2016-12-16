@@ -8,6 +8,9 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -86,8 +89,18 @@ public class Payment extends Activity{
 
         @Override
         protected void onPostExecute(String result){
-
-            checked.setText(result);
+            JSONObject mjson = null;
+            try {
+                mjson = new JSONObject(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("json checking", mjson.toString());
+            try {
+                checked.setText(mjson.getString("url"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
