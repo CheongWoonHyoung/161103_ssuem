@@ -2,12 +2,15 @@ package com.example.woonhyoungcheong.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,30 +34,34 @@ public class Payment extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.payment);
+        Log.e("payment", "completed");
 
         Intent intent = getIntent();
         ArrayList<String> name = intent.getStringArrayListExtra("checked_items");
-        sample_JSON = "[{'user_id':'1','writings':{";
+        Log.e("intent data",name.toString());
+        sample_JSON = "{\"user_id\":\"460\",\"writings\":{";
         String ids = "";
         for(int i = 0; i < name.size(); i++)
         {
-            ids += "'" + String.valueOf(i)+ "':'" + name.get(i) + "'";
+            ids += "\"" + String.valueOf(i)+ "\":\"" + name.get(i) + "\"";
             if(i != name.size()-1)
                 ids += ",";
         }
-        ids += "}}]";
+        ids += "}}";
+        sample_JSON += ids;
         checked = (TextView)findViewById(R.id.sample_payment);
         new HttpPostRequest().execute("");
     }
 
     private class HttpPostRequest extends AsyncTask<String, Void, String> {
-
+        private String parser = "";
         @Override
         protected String doInBackground(String... info) {
             String sResult = "Error";
 
             try {
-                URL url = new URL("http://172.31.3.47/sample.php/?data=" + sample_JSON);
+                Log.e("data",sample_JSON);
+                URL url = new URL("http://ec2-52-78-239-42.ap-northeast-2.compute.amazonaws.com/a.php/?data=" + sample_JSON);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 conn.setRequestMethod("POST");
@@ -89,17 +96,33 @@ public class Payment extends Activity{
 
         @Override
         protected void onPostExecute(String result){
-            JSONObject mjson = null;
+            int half_index = result.length()/2;
+            parser = result.substring(half_index);
+            String dummy = parser.substring(0,10);
+            Log.e("dummy",parser.substring(0,10));
+            String replacement = "";
+
+            parser = parser.replace(parser.substring(0,10),replacement);
+            parser = parser.replace("\"",replacement);
+            parser = parser.replace(" ",replacement);
+            Log.e("after parsing",parser);
+
+
             try {
-                mjson = new JSONObject(result);
-            } catch (JSONException e) {
+                checked.setText("http://ec2-52-78-239-42.ap-northeast-2.compute.amazonaws.com/" + parser);
+                checked.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://ec2-52-78-239-42.ap-northeast-2.compute.amazonaws.com/" + parser));
+
+                        startActivity(intent);
+
+
+                    }
+                });
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            Log.e("json checking", mjson.toString());
-            try {
-                checked.setText(mjson.getString("url"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("Texting", "error in settext");
             }
         }
     }

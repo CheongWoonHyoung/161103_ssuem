@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String>checkedItemIdList;
 
-    public String sample_JSON = "[{'key_name':'감자탕','key_id':'1','contents':'하악하악 감자탕'}," +
-                                    "{'key_name':'곰국','key_id':'2','contents':'하악하악 곰국 한숟가락 남기고 다 비우기'},"  +
-                                    "{'key_name':'김치찌개','key_id':'3','contents':'하악하악 김치찌개 김천 김치찌개 맜있음.'}]";
+    public String sample_JSON = "[{'key_name':'감자탕','key_id':'420','contents':'하악하악 감자탕'}," +
+                                    "{'key_name':'곰국','key_id':'700','contents':'하악하악 곰국 한숟가락 남기고 다 비우기'},"  +
+                                    "{'key_name':'김치찌개','key_id':'800','contents':'하악하악 김치찌개 김천 김치찌개 맜있음.'}]";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +40,11 @@ public class MainActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(listener);
-        User u1 = new User("user1","감자탕","1");
+        User u1 = new User("user1","감자탕","400");
         adapter.add(u1);
-        User u2 = new User("user1","곰국","2");
+        User u2 = new User("user1","곰국","500");
         adapter.add(u2);
-        User u3 = new User("user1","김치찌개","3");
+        User u3 = new User("user1","김치찌개","420");
         adapter.add(u3);
 
         btsend.setOnClickListener(new View.OnClickListener() {
@@ -53,20 +54,34 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0; i<adapter.getCount(); i++){
                     if(adapter.getncb().get(i).isChecked()){
                         checkedItemList.add(adapter.getnky().get(i));
-                        checkedItemIdList = adapter.getnkyid();
+                        checkedItemIdList.add(adapter.getnkyid().get(i));
                     }
 
                 }
+
                 Intent payment_intent = new Intent(MainActivity.this, Payment.class);
 
-                ArrayList<String> sample = checkedItemIdList;
-                payment_intent.putExtra("checked_items",sample );
-                int count = checkedItemList.size();
-                startActivity(payment_intent);
-                for(int i = 0; i<count; i++){
-                    checkedItemList.remove(i);
-                    checkedItemIdList.remove(i);
+                ArrayList<String> sample = new ArrayList<String>(checkedItemIdList);
+                Log.e("throwing data",sample.toString());
+                try {
+                    payment_intent.putExtra("checked_items", sample);
+                    Log.e("1111","111111");
                 }
+                catch (Exception e){
+                    Log.e("Put error", e.toString());
+                }
+                Log.e("putExtras", "Completed");
+                checkedItemList.clear();
+                checkedItemIdList.clear();
+
+                try {
+                    startActivity(payment_intent);
+
+                }
+                catch (Exception e){
+                    Log.e("error",e.toString());
+                }
+
             }
         });
 
